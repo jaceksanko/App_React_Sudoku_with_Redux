@@ -1,32 +1,24 @@
 import React from 'react';
 import sudoku from 'sudoku-umd';
-import Board from '../components/Board';
+import BoardContainer from './BoardContainer';
 import swal from 'sweetalert';
 import Popup from "reactjs-popup";
-//import { handleNewGameEasy, handleNewGameMedium, handleNewGameHard } from '../redux/actions';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        /* this.state = {
-            initialBoard: '',
-            board: '',
-            tempBoard: '',
-            resetTile: false
-        }; */
-        
+               
         this.handleCheck = this.handleCheck.bind(this);
         this.handleSolve = this.handleSolve.bind(this);
-        /*
+        
         this.handleSave = this.handleSave.bind(this);
-        this.handleLoad = this.handleLoad.bind(this); */
+        this.handleLoad = this.handleLoad.bind(this);
     }
-/* 
+ 
     handleSave() {
-        localStorage.setItem('initialBoard', this.state.initialBoard);
-        localStorage.setItem('board', this.state.board);
-        localStorage.setItem('tempBoard', this.state.tempBoard);
-        localStorage.setItem('resetTile', this.state.resetTile);
+        localStorage.setItem('initialBoard', this.props.appState.initialBoard);
+        localStorage.setItem('board', this.props.appState.board);
+        localStorage.setItem('tempBoard', this.props.appState.tempBoard);
         swal("Stan gry został zapisany","", "success");
     }
 
@@ -34,23 +26,17 @@ class App extends React.Component {
         let saveInitialBoard = localStorage.getItem('initialBoard');
         let saveBoard = localStorage.getItem('board');
         let saveTempBoard = localStorage.getItem('tempBoard');
-        let saveresetTile = localStorage.getItem('resetTile')
-        this.setState({
-            initialBoard: saveInitialBoard,
-            board: saveBoard,
-            tempBoard: saveTempBoard,
-            resetTile: saveresetTile
-        })
+        
+        this.props.handleLoad(saveInitialBoard, saveBoard, saveTempBoard)
         swal("Zapisany stan gry został wczytany","", "success");     
-    } */
+    } 
     
     solveCheck(solveFalse, solveCheck) {
-        let getTempBoard = this.state.tempBoard;
-        let board = this.state.initialBoard;
+        let getTempBoard = this.props.appState.tempBoard;
+        let board = this.props.appState.initialBoard;
         let solve = sudoku.solve(getTempBoard);
         if (solve === false || getTempBoard === board) {
             swal(solveFalse.head, solveFalse.text, solveFalse.type);
-            this.handleRestart()
         }
         else {
             solveCheck
@@ -64,11 +50,9 @@ class App extends React.Component {
             head: "Przykro mi.", 
             text: "Sudoku nie da się rozwiązać. Gdzieś jest błąd. Spróbuj nową grę.",
             type: "error"};
-        let solveCheck = this.setState({
-                board: this.state.tempBoard
-            })
+        let solveCheck = this.props.handleSolve() //to jest funkcja z actions przypisująca board  rozwiazanie tempBoard
         this.solveCheck(solveFalse, solveCheck);
-        
+        this.props.handleRestart()
     }
 
     handleCheck() {
@@ -81,15 +65,14 @@ class App extends React.Component {
         
     }
     
-    
-    
+
     render() {
-        console.log(this.props.appState);
+        
         return (
             <div className="App">
                 <h1>Sudoku</h1>
                 <div className="board">
-                    <Board newGame={this.props.appState.initialBoard.split("")} actualBoard={this.props.appState.board.split("")}  resetTile={this.props.appState.resetTile} />
+                    <BoardContainer />
                 </div>
                
                 <div className="buttons">
@@ -140,6 +123,8 @@ class App extends React.Component {
                     <button onClick={this.handleCheck}>Check</button>
                     <button onClick={this.handleSolve}>Solve</button>
                     <button onClick={this.props.handleRestart}>Restart</button>
+                    <button onClick={this.handleSave}>Save Game</button>
+                    <button onClick={this.handleLoad}>Load Save</button>
                 </div>
             </div>
         )

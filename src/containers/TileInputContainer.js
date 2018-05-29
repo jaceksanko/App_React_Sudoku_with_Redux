@@ -6,4 +6,5 @@ const mapDispatchToProps = dispatch => ({
     addValueTileInput: (value, id) => dispatch(addValueTileInput(value, id))
 });
 
+
 export default connect(null, mapDispatchToProps)(TileInput);

@@ -6,7 +6,7 @@ class TileInput extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
+            value: this.props.inputValue,
             id: ''
 
         };
@@ -31,7 +31,7 @@ class TileInput extends React.Component {
        
     }
 
-    /* componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.inputValue !== this.props.inputValue ) {           
             this.setState({
                 value: nextProps.inputValue,
@@ -45,10 +45,8 @@ class TileInput extends React.Component {
                 value: '',
                 id: ''   
             })
-        };
-
-        
-    } */
+        };   
+    }
 
     render() {
         

@@ -1,4 +1,4 @@
-import { handleNewGameEasy, handleNewGameMedium, handleNewGameHard, addValueTileInput, handleRestart } from '../redux/actions';
+import { handleNewGameEasy, handleNewGameMedium, handleNewGameHard, addValueTileInput, handleRestart, handleSolve, handleLoad } from '../redux/actions';
 import { connect } from 'react-redux';
 import App from './App'
 import Tile from '../components/Tile';
@@ -14,11 +14,9 @@ const mapDispatchToProps = dispatch => ({
     handleNewGameMedium: () => dispatch(handleNewGameMedium()),
     handleNewGameHard: () => dispatch(handleNewGameHard()),
     handleRestart: () => dispatch(handleRestart()),
+    handleSolve: () => dispatch(handleSolve()),
+    handleLoad: (initialBoard, board, tempBoard) => dispatch(handleLoad(initialBoard, board, tempBoard))
 });
-
-
-
-
 
 
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);

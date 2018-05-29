@@ -3,11 +3,9 @@ import sudoku from 'sudoku-umd';
 export const    HANDLE_NEW_GAME_EASY = 'HANDLE_NEW_GAME_EASY',
                 HANDLE_NEW_GAME_MEDIUM = 'HANDLE_NEW_GAME_MEDIUM',
                 HANDLE_NEW_GAME_HARD = 'HANDLE_NEW_GAME_HARD',
-                ADD_VALUE_TILE = 'ADD_VALUE_TILE',
-                HANDLE_CHECK = 'HANDLE_CHECK',
+                ADD_VALUE_TILE_INPUT = 'ADD_VALUE_TILE',
                 HANDLE_RESTART = 'HANDLE_RESTART',
                 HANDLE_SOLVE = 'HANDLE_SOLVE',
-                HANDLE_SAVE = 'HANDLE_SAVE',
                 HANDLE_LOAD = 'HANDLE_LOAD';
 
 
@@ -40,14 +38,12 @@ export function handleNewGameHard() {
 }
 export function addValueTileInput(value, id) {
     return {
-        type: ADD_VALUE_TILE,
+        type: ADD_VALUE_TILE_INPUT,
         value: value,
         id: id
     };
 } 
-export function handleCheck() {
 
-} 
 export function handleRestart() {
     return {
         type: HANDLE_RESTART
@@ -55,11 +51,15 @@ export function handleRestart() {
 
 } 
 export function handleSolve() {
-
+    return {
+        type: HANDLE_SOLVE
+    };
 }
-export function handleSave() {
-
-}
-export function handleLoad() {
-
+export function handleLoad(initialBoard, board, tempBoard) {
+   return {
+        type: HANDLE_LOAD,
+        initialBoard: initialBoard,
+        board: board,
+        tempBoard: tempBoard
+    };
 }
