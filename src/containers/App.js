@@ -3,25 +3,21 @@ import sudoku from 'sudoku-umd';
 import Board from '../components/Board';
 import swal from 'sweetalert';
 import Popup from "reactjs-popup";
-import { newGame } from '../redux/actions';
-import { connect } from 'react-redux';
+//import { handleNewGameEasy, handleNewGameMedium, handleNewGameHard } from '../redux/actions';
 
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
+        /* this.state = {
             initialBoard: '',
             board: '',
             tempBoard: '',
             resetTile: false
-        };
-        this.handleNewGameEasy = this.handleNewGameEasy.bind(this);
-        /* this.handleNewGameMedium = this.handleNewGameMedium.bind(this);
-        this.handleNewGameHard = this.handleNewGameHard.bind(this);
-        this.addValueTile = this.addValueTile.bind(this);
+        }; */
+        
         this.handleCheck = this.handleCheck.bind(this);
-        this.handleRestart = this.handleRestart.bind(this);
         this.handleSolve = this.handleSolve.bind(this);
+        /*
         this.handleSave = this.handleSave.bind(this);
         this.handleLoad = this.handleLoad.bind(this); */
     }
@@ -47,36 +43,7 @@ class App extends React.Component {
         })
         swal("Zapisany stan gry został wczytany","", "success");     
     } */
-
-    newGame1(gameLevel) {
-        //this.handleRestart();
-        let newSudoku = sudoku.generate(gameLevel);
-        this.props.newGame(newSudoku);
-    }
-
-
-    handleNewGameEasy() {        
-        this.newGame1("easy");
-    };
-
-    /* handleNewGameMedium() {
-        this.newGame("medium");  
-    };
-
-    handleNewGameHard() {
-        this.newGame("hard");
-    };
     
-    addValueTile(valueTile) {
-            let boardArray = this.state.tempBoard.split("");
-            boardArray[valueTile.id] = valueTile.value;
-            let boardString = boardArray.join('');
-            this.setState({
-                tempBoard: boardString,
-                resetTile: false
-            })
-        }
-
     solveCheck(solveFalse, solveCheck) {
         let getTempBoard = this.state.tempBoard;
         let board = this.state.initialBoard;
@@ -114,41 +81,69 @@ class App extends React.Component {
         
     }
     
-    handleRestart() {
-        this.setState({
-            board: this.state.initialBoard,
-            tempBoard: this.state.initialBoard,
-            resetTile: true
-        })
-    } */
     
-    render() {   
+    
+    render() {
+        console.log(this.props.appState);
         return (
             <div className="App">
                 <h1>Sudoku</h1>
                 <div className="board">
-                    <Board newGame={this.props.appState.initialBoard.split("")} actualBoard={this.props.appState.board.split("")}  resetTile={this.props.appState.resetTile} tempBoard={this.props.appState.tempBoard.split("")} />
+                    <Board newGame={this.props.appState.initialBoard.split("")} actualBoard={this.props.appState.board.split("")}  resetTile={this.props.appState.resetTile} />
                 </div>
                
                 <div className="buttons">
-                    <button onClick={this.handleNewGameEasy}>New game</button>
+                    <Popup trigger={<button className="button"> New Game </button>} modal>
+                        {close => (
+                        <div className="modal">
+                            <a className="close" onClick={close}>
+                            &times;
+                            </a>
+                            <div className="header"> Game level </div>
+                            <div className="content">
+                            {" "}
+                            Chose game level of sudoku <br/>
+                            Number of given squares: <br/>
+                            <ul>
+                                <li>easy:         62</li>
+                                <li>medium:       53</li>
+                                <li>hard:         44</li>
+                            </ul>
+   
+                            </div>
+                            <div className="actions">
+                                <button onClick={() => {
+                                    this.props.handleNewGameEasy()
+                                    close()
+                                    }}>Easy</button>
+                                <button onClick={() => {
+                                    this.props.handleNewGameMedium()
+                                    close()
+                                    }}>Medium</button>
+                                <button onClick={() => {
+                                    this.props.handleNewGameHard()
+                                    close()
+                                    }}>Hard</button>
+                                <button
+                                    className="button"
+                                    onClick={() => {
+                                    console.log('modal closed ')
+                                    close()
+                                    }}
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </div>
+                        )}
+                    </Popup>
+                    <button onClick={this.handleCheck}>Check</button>
+                    <button onClick={this.handleSolve}>Solve</button>
+                    <button onClick={this.props.handleRestart}>Restart</button>
                 </div>
             </div>
         )
     }
 }
 
-
-
-const mapStateToProps = state => {
-    return {
-        appState: state
-    };
-};
-
-const mapDispatchToProps = dispatch => ({
-    newGame: () => dispatch(newGame())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-/* export default App; */
+export default App;

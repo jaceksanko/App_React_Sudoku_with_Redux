@@ -1,5 +1,6 @@
 import React from 'react';
 import Tile from './Tile';
+import TileInputContainer from '../containers/TileInputContainer';
 
 
 class Board extends React.Component { 
@@ -13,12 +14,12 @@ class Board extends React.Component {
             
             if (isNaN(el)) {
                 return (
-                    <Tile key={id} style={'open'}  idBoard={id} inputValue={tempBoard[id]} dis={false} addValueTile={addValueTile} resetTile={resetTile} /> 
+                    <TileInputContainer key={id} style={'open'}  idBoard={id}  dis={false} /> 
                 )  
             }
             else {
                 return (
-                    <Tile key={id} style={'close'} idBoard={id} inputValue={el} dis={true} addValueTile={addValueTile}/>  
+                    <Tile key={id}  style={'close'} idBoard={id} inputValue={el} dis={true} addValueTile={addValueTile}/>  
                 )
             }
         })
